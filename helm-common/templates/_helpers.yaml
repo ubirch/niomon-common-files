@@ -1,0 +1,124 @@
+{{/* vim: set filetype=mustache: */}}
+
+{{- define "niomon.name" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "niomon.fullname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+
+{{- define "niomon.chart" -}}
+  {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | quote -}}
+{{- end -}}
+
+{{ define "niomon.deployment" }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "{{ .name }}-{{ template "niomon.fullname" .Root }}"
+  namespace: {{ .Root.Values.namespace }}
+spec:
+  replicas: {{ .replicas | default 1 }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: niomon
+        component: {{ .name }}
+    spec:
+      serviceAccountName: ingest
+      containers:
+      - name: {{ .name }}-container
+        image: "ubirch/{{ .name }}:{{ .Root.Values.image.tag | default "latest" }}"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        - containerPort: 9010
+        - containerPort: 4321
+        {{- range (.ports | default (tuple)) }}
+        - name: {{ .name }}
+          containerPort: {{ .port }}
+        {{- end }}
+        resources:
+          requests:
+            cpu: 0.5
+            memory: 0.3Gi
+          limits:
+            cpu: 1
+            memory: 0.5Gi
+        readinessProbe:
+          tcpSocket:
+            port: {{ .readinessPort | default 9010 }}
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 9010
+          initialDelaySeconds: 20
+          periodSeconds: 60
+        env:
+        - name: PROMETHEUS_PORT
+          value: "4321"
+        - name: KAFKA_URL
+          value: "{{ .Root.Values.kafkaURL }}"
+        {{- .envStr | nindent 8 }}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+{{ end }}
+
+{{ define "niomon.service" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}-service
+  namespace: {{ .Root.Values.namespace }}
+  labels:
+    app: niomon
+    component: {{ .name }}
+spec:
+  selector:
+    app: niomon
+    component: {{ .name }}
+  ports:
+  - name: prometheus-metrics
+    port: 4321
+    protocol: TCP
+  {{- if .servicePorts -}}
+  {{- .servicePorts | nindent 2 }}
+  {{- end }}
+  type: NodePort
+{{ end }}
+
+{{- define "niomon.prometheus.monitor" -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: prometheus-operator
+    release: prometheus-operator
+    niomon-name: {{ .name }}
+  name: {{ .name }}-monitor
+  namespace: {{ .Root.Values.namespace }}
+spec:
+  endpoints:
+    - interval: 5s
+      path: /
+      port: prometheus-metrics
+  namespaceSelector:
+    matchNames:
+      - {{ .Root.Values.namespace }}
+  selector:
+    name: {{ .name -}}-service
+{{- end -}}
