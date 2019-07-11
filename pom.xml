@@ -54,20 +54,20 @@
                                     <directory>helm-common</directory>
                                 </resource>
                             </resources>
-                            <outputDirectory>${project.build.outputDirectory}/helm-files</outputDirectory>
+                            <outputDirectory>${project.build.outputDirectory}/helm-common</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-common-top-level</id>
+                        <id>copy-common-root</id>
                         <phase>process-resources</phase>
                         <goals><goal>copy-resources</goal></goals>
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>top-level-common</directory>
+                                    <directory>root-common</directory>
                                 </resource>
                             </resources>
-                            <outputDirectory>${project.build.outputDirectory}/top-level-files</outputDirectory>
+                            <outputDirectory>${project.build.outputDirectory}/root-common</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
