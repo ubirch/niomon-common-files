@@ -37,6 +37,7 @@ spec:
         app: niomon
         component: {{ .name }}
     spec:
+      serviceAccountName: {{ .serviceAccountName | default "default" }}
       containers:
       - name: "niomon-{{ .name }}-container"
         image: "ubirch/{{ .name }}:{{ .Root.Values.image.tag | default "latest" }}"
