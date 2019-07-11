@@ -22,7 +22,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{ .name }}-{{ template "niomon.fullname" .Root }}"
+  name: "niomon-{{ .name }}-deployment"
   namespace: {{ .Root.Values.namespace }}
 spec:
   replicas: {{ .replicas | default 1 }}
@@ -37,9 +37,8 @@ spec:
         app: niomon
         component: {{ .name }}
     spec:
-      serviceAccountName: ingest
       containers:
-      - name: {{ .name }}-container
+      - name: "niomon-{{ .name }}-container"
         image: "ubirch/{{ .name }}:{{ .Root.Values.image.tag | default "latest" }}"
         imagePullPolicy: Always
         ports:
@@ -82,7 +81,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .name }}-service
+  name: "niomon-{{ .name }}-service"
   namespace: {{ .Root.Values.namespace }}
   labels:
     app: niomon
@@ -109,7 +108,7 @@ metadata:
     app: prometheus-operator
     release: prometheus-operator
     niomon-name: {{ .name }}
-  name: {{ .name }}-monitor
+  name: "niomon-{{ .name }}-monitor"
   namespace: {{ .Root.Values.namespace }}
 spec:
   endpoints:
@@ -120,5 +119,5 @@ spec:
     matchNames:
       - {{ .Root.Values.namespace }}
   selector:
-    name: {{ .name -}}-service
+    name: "niomon-{{ .name -}}-service"
 {{- end -}}
