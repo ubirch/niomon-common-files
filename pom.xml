@@ -19,8 +19,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ubirch</groupId>
-    <artifactId>niomon-common-files</artifactId>
+    <groupId>com.ubirch.niomon</groupId>
+    <artifactId>common-files</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -32,7 +32,7 @@
         </license>
     </licenses>
 
-    <name>niomon-common-files [${project.version}]</name>
+    <name>common-files [${project.version}]</name>
     <description>ubirch code project</description>
     <organization>
         <name>ubirch GmbH</name>
