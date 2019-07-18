@@ -40,7 +40,7 @@ spec:
       serviceAccountName: {{ .serviceAccountName | default "default" }}
       containers:
       - name: "niomon-{{ .name }}-container"
-        image: "ubirch/{{ .name }}:{{ .Root.Values.image.tag | default "latest" }}"
+        image: "ubirch/niomon-{{ .name }}:{{ .Root.Values.image.tag | default "latest" }}"
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
