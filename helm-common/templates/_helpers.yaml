@@ -120,5 +120,7 @@ spec:
     matchNames:
       - {{ .Root.Values.namespace }}
   selector:
-    name: "niomon-{{ .name }}-service"
+    matchLabels:
+      app: niomon
+      component: {{ .name }}
 {{- end -}}
