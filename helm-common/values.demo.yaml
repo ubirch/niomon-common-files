@@ -28,3 +28,11 @@ ingress:
     - secretName: niomon-demo-ubirch-com-certificate
       hosts:
         - niomon.demo.ubirch.com
+
+resources:
+  requests:
+    cpu: 0.5
+    memory: 0.3Gi
+  limits:
+    cpu: 1
+    memory: 0.5Gi
