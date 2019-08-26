@@ -31,8 +31,29 @@ ingress:
 
 resources:
   requests:
-    cpu: 0.5
     memory: 0.3Gi
   limits:
-    cpu: 1
     memory: 0.5Gi
+
+# settings for individual services
+auth:
+  replicas: 1
+
+decoder:
+  replicas: 1
+
+enricher:
+  replicas: 1
+
+http:
+  replicas: 1
+
+responder:
+  replicas: 1
+
+signer:
+  replicas: 1
+
+verifier:
+  replicas: 1
+
