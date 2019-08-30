@@ -31,29 +31,30 @@ ingress:
 
 resources:
   requests:
+    cpu: 2
     memory: 0.3Gi
   limits:
     memory: 0.5Gi
 
 # settings for individual services
 auth:
-  replicas: 1
+  replicas: 2
 
 decoder:
   replicas: 1
 
 enricher:
-  replicas: 1
+  replicas: 2
 
 http:
-  replicas: 1
+  replicas: 3
 
 responder:
   replicas: 1
 
 signer:
-  replicas: 1
+  replicas: 2
 
 verifier:
-  replicas: 1
+  replicas: 2
 
