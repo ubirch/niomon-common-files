@@ -39,6 +39,7 @@ resources:
 # settings for individual services
 auth:
   replicas: 2
+  ubirchAuthUrl: https://api.console.dev.ubirch.com/ubirch-web-ui/api/v1/auth/
 
 decoder:
   replicas: 1
