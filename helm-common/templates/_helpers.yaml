@@ -44,6 +44,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        - containerPort: 8888
         - containerPort: 9010
         - containerPort: 4321
         {{- range (.ports | default (tuple)) }}
@@ -99,6 +100,9 @@ spec:
   ports:
   - name: prometheus-metrics
     port: 4321
+    protocol: TCP
+  - name: health-check
+    port: 8888
     protocol: TCP
   {{- if .servicePorts -}}
   {{- .servicePorts | nindent 2 }}
