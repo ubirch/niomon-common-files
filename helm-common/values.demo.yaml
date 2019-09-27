@@ -7,8 +7,8 @@ image:
 # settings for ingest
 keyServiceURL: "key-service-core-demo.core-demo.svc.cluster.local:8095"
 kafkaURL: "kafka.core-demo.svc.cluster.local:9092"
-redisSecretName: "redis-secrets-avatar"
-serverUuid: "10b2e1a4-56b3-4fff-9ada-cc8c20f93016"
+redisSecretName: "redis-secrets"
+serverUuid: "9d3c78ff-22f3-4441-a5d1-85c636d486ff"
 
 redis:
   masterURL: "redis-stable-master.core-demo.svc.cluster.local:6379"
@@ -19,7 +19,7 @@ ingress:
   annotations:
     certmanager.k8s.io/acme-challenge-type: "dns01"
     certmanager.k8s.io/cluster-issuer: "letsencrypt-demo"
-    certmanager.k8s.io/acme-dns01-provider: "demo-dns-demo-ubirch-com"
+    certmanager.k8s.io/acme-dns01-provider: "demo-dns"
     kubernetes.io/ingress.allow-http: "false"
   path: /
   hosts:
@@ -31,8 +31,30 @@ ingress:
 
 resources:
   requests:
-    cpu: 0.5
+    cpu: 2
     memory: 0.3Gi
   limits:
-    cpu: 1
     memory: 0.5Gi
+
+# settings for individual services
+auth:
+  replicas: 2
+  ubirchAuthUrl: "https://api.console.demo.ubirch.com/ubirch-web-ui/api/v1/auth"
+
+decoder:
+  replicas: 1
+
+enricher:
+  replicas: 2
+
+http:
+  replicas: 3
+
+responder:
+  replicas: 1
+
+signer:
+  replicas: 2
+
+verifier:
+  replicas: 2

@@ -58,4 +58,3 @@ signer:
 
 verifier:
   replicas: 2
-
