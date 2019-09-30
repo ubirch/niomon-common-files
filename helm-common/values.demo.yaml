@@ -48,7 +48,7 @@ enricher:
   replicas: 2
 
 http:
-  replicas: 3
+  replicas: 2
 
 responder:
   replicas: 1
