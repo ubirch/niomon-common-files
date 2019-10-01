@@ -46,6 +46,7 @@ decoder:
 
 enricher:
   replicas: 2
+  ubirchDeviceInfoUrl: https://api.console.dev.ubirch.com/ubirch-web-ui/api/v1/auth/deviceInfo
 
 http:
   replicas: 3
