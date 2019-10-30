@@ -54,15 +54,17 @@ spec:
         resources:
           {{- toYaml .Root.Values.resources | nindent 10 }}
         readinessProbe:
-          tcpSocket:
-            port: {{ .readinessPort | default 9010 }}
+          httpGet:
+            path: {{ .readinessPath | default "/health/ready" }}
+            port: 8888
           initialDelaySeconds: 10
           periodSeconds: 10
         livenessProbe:
-          tcpSocket:
-            port: 9010
-          initialDelaySeconds: 20
-          periodSeconds: 60
+          httpGet:
+            path: {{ .livenessPath | default "/health/live" }}
+            port: 8888
+          initialDelaySeconds: 10
+          periodSeconds: 10
         env:
         - name: PROMETHEUS_PORT
           value: "4321"
