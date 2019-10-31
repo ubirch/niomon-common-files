@@ -44,21 +44,22 @@ ADDITIONAL_ARGS=$*
 
 for HELM_PROJECT_NAME in "${NIOMON_MICROSERVICES[@]}"; do
   echo "Microservice: $HELM_PROJECT_NAME"
-  VALUES_FILE="./${HELM_PROJECT_NAME}/values.${UBIRCH_ENV}.yaml"
+  # replace 'beta' in env names, like "demobeta" so we can deploy to an intermedia clusters
+  VALUES_FILE="./${HELM_PROJECT_NAME}/values.${UBIRCH_ENV/beta/}.yaml"
   echo "Values file: $VALUES_FILE"
 
   # we allow errors here, because it's normal for the delete command to fail, ex. it's the first time we're deploying
   set +e
-  set -x
+  #sset -x
 
   if ! echo "${ADDITIONAL_ARGS}" | grep "dry-run"; then
-    ${HELMSH} "${UBIRCH_ENV}" delete "niomon-${HELM_PROJECT_NAME}-${UBIRCH_ENV}" --purge
+    ${HELMSH} "${UBIRCH_ENV}" delete "niomon-${HELM_PROJECT_NAME}" --purge
   fi
 
   ${HELMSH} "${UBIRCH_ENV}" install \
     "${HELM_PROJECT_NAME}" --namespace "ubirch-${UBIRCH_ENV}" \
-    --name "niomon-${HELM_PROJECT_NAME}-${UBIRCH_ENV}" --debug \
+    --name "niomon-${HELM_PROJECT_NAME}" --debug \
     -f "${VALUES_FILE}" \
-    --set "image.tag=${UBIRCH_ENV}" \
+    --set "image.tag=devbuild" \
     $ADDITIONAL_ARGS
 done
