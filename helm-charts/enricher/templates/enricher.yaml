@@ -14,13 +14,13 @@
 - name: C8Y_USERNAME
   valueFrom:
     secretKeyRef:
-      name: cumulocity-secrets-niomon
-      key: cumulocity-username
+      name: ubs.cumulocity
+      key: username
 - name: C8Y_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: cumulocity-secrets-niomon
-      key: cumulocity-password
+      name: ubs.cumulocity
+      key: password
 - name: REDIS_MASTER_URL
   value: "{{.Values.redis.masterURL}}"
 - name: REDIS_SLAVE_URL
@@ -28,8 +28,8 @@
 - name: REDIS_PASSWORD
   valueFrom:
     secretKeyRef:
-      key: redis-password
-      name: {{.Values.redisSecretName}}
+      key: password
+      name: ubs.redis
 {{- end -}}
 
 {{- $deployment := (dict "envStr" (include "niomon-enricher.env" .)) -}}
