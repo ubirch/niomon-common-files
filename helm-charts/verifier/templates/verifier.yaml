@@ -14,7 +14,7 @@
 - name: REDIS_PASSWORD
   valueFrom:
     secretKeyRef:
-      key: redis-password
+      key: password
       name: {{.Values.redisSecretName}}
 {{- end -}}
 

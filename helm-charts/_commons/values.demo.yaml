@@ -7,7 +7,7 @@ image:
 # settings for ingest
 keyServiceURL: "key-service-core-demo.core-demo.svc.cluster.local:8095"
 kafkaURL: "kafka.core-demo.svc.cluster.local:9092"
-redisSecretName: "redis-secrets-avatar"
+redisSecretName: "ubs.redis"
 serverUuid: "9d3c78ff-22f3-4441-a5d1-85c636d486ff"
 
 redis:

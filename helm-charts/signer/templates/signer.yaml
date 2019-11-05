@@ -8,8 +8,8 @@
 - name: SIGNER_PRIVATE_KEY
   valueFrom:
     secretKeyRef:
-      name: private-keys-niomon
-      key: signer-key-ed25519
+      name: ubs.niomon
+      key: private-key
 {{- end -}}
 
 {{- $deployment := (dict "envStr" (include "niomon-signer.env" .)) -}}
