@@ -5,17 +5,7 @@ set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 cd ${DIR}
 
-function usage {
-    echo "$0 {env name: dev/demo/prod} [{rest passed to maven}...]"
-}
-
-if [[ -z "$1" ]]; then
-    usage
-    exit 1
-fi
-
-BUILD_NUM="$1"
+BUILD_NUM=${1:-devbuild}
 shift
 
-set -x
 mvn deploy -Dbuild.number=${BUILD_NUM} $@
