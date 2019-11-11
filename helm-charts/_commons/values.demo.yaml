@@ -33,7 +33,7 @@ resources:
   requests:
     memory: 0.3Gi
   limits:
-    memory: 0.5Gi
+    memory: 1Gi
 
 # settings for individual services
 auth:
@@ -48,7 +48,7 @@ enricher:
   ubirchDeviceInfoUrl: https://api.console.demo.ubirch.com/ubirch-web-ui/api/v1/auth/deviceInfo
 
 http:
-  replicas: 2
+  replicas: 3
 
 responder:
   replicas: 1
